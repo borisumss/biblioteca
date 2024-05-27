@@ -24,8 +24,10 @@ https://dotnet.microsoft.com/en-us/download
 ```
 
 ### Ejecuta el proyecto
+Nos movemos al directorio del proyecto
 
 ```
+cd biblioteca/
 ~/ruta/proyecto/biblioteca/biblioteca> dotnet run
 ```
 

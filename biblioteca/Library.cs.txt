@@ -1,0 +1,202 @@
+using System;
+
+namespace Library
+{
+
+    public class Library
+    {
+        static void Main(string[] args)
+        {
+            Student student = new Student("Pablo", "Estudiante");
+            LibraryChief chief = new LibraryChief("Oscar", "Administrador");
+            LibraryPanel libraryPanel = new LibraryPanel();
+            IUserManager userManager = libraryPanel.GetUserManager();
+            ILibraryManager libraryManager = libraryPanel.GetLibraryManager();
+
+            Console.WriteLine("Inicia sesion...");
+            userManager.UserAuthentication();
+            Console.WriteLine("Bienvenido Estudiante: " + student.GetName());
+            Console.Write("Que desea hacer: ");
+            student.GetBorrowBook();
+            Console.Write("Un estudiante ha: ");
+            libraryManager.BorrowBook();
+            userManager.UserActivity();
+            Console.Write("El estudiante ha: ");
+            libraryManager.ReturnBook();
+            userManager.UserLogout();
+
+            Console.WriteLine("Inicia sesion...");
+            userManager.UserAuthentication();
+            Console.WriteLine("Bienvenido Administrador: " + chief.GetName());
+            Console.Write("Que desea hacer: ");
+            chief.AuthorizationSystem();
+            userManager.UserLogout();
+
+            Console.WriteLine("Presiona cualquier tecla para salir...");
+            Console.ReadKey();
+        }
+    }
+
+    // La Clase `LibraryPanel` donde se usan las interfaces de manejo o administracion (DIP)
+    // Debido a que se maneja dos capas de abstraccion que son dos interfaces
+
+    // Tambien se puede decir que se aplica el principio de (SRP)
+    // Debido a que el panel de la Biblioteca esta encargada de de administrar todo lo que
+    // se hagaen el reduciendo el acoplamiento con las interfaces de administracion
+    public class LibraryPanel
+    {
+        IUserManager userManager = new UserManager();
+        ILibraryManager libraryManager = new LibraryManager();
+
+        public ILibraryManager GetLibraryManager()
+        {
+            return libraryManager;
+        }
+
+        public IUserManager GetUserManager()
+        {
+            return userManager;
+        }
+    }
+    // Un libro que puede ser extendido (OCP)
+    // Se lo puede extender a sus distinto generos que existe y esta cerrado a la modificacion
+    // por el hecho de que no se nesecita modificar el libro base
+
+    // Usaremos el patron de creacion
+    public abstract class Book(string title, string author)
+    {
+        public string title = title;
+        public string author = author;
+
+        public string GetTitle()
+        {
+            return title;
+        }
+
+        public string GetAuthor()
+        {
+            return author;
+        }
+
+        public abstract string GetGender();
+    }
+
+    public class SciFiBook(string title, string author) : Book(title, author)
+    {
+        public override string GetGender()
+        {
+            return "Science Fiction Book";
+        }
+    }
+
+    public class FantasyBook(string title, string author) : Book(title, author)
+    {
+        public override string GetGender()
+        {
+            return "Fantasy Book";
+        }
+    }
+
+    // Aqui se aplica (LSP) debido al tipo de usuario que hay
+    // porque si bien los usuarios 'Student' y 'LibraryChief' tiene algunos comportamientos
+    // iguales el 'LibraryChief' puede tener control de sistema de la Biblioteca
+    // a diferencia del 'Student' que tiene limite en lo que pude hacer
+    public class User(string name, string role)
+    {
+        public string name = name;
+        public string role = role;
+
+        public string GetName()
+        {
+            return name;
+        }
+
+        public string GetRole()
+        {
+            return role;
+        }
+    }
+
+    public class Student(string name, string role) : User(name, role)
+    {
+        public void GetBorrowBook()
+        {
+            Console.WriteLine("Pedir libro prestado");
+        }
+    }
+
+    public class LibraryChief(string name, string role) : User(name, role)
+    {
+        public void AuthorizationSystem()
+        {
+            Console.WriteLine("Acceso al sistema de la Biblioteca");
+        }
+    }
+
+    // Se aplica el principio de (ISP)
+    // Debido a que se hace interfaces especificas donde se tiene una alta cohesion en sus
+    // metodos y existe un bajo acoplamiento
+    public interface ILibraryManager
+    {
+        public void BorrowBook();
+        public void AddBook();
+        public void ReturnBook();
+        public void SaveBook();
+    }
+
+    public class LibraryManager : ILibraryManager
+    {
+        public void AddBook()
+        {
+            Console.WriteLine("Libro Añadido");
+        }
+        public void SaveBook()
+        {
+            Console.WriteLine("Libro Guardado");
+        }
+
+        public void BorrowBook()
+        {
+            Console.WriteLine("Libro Prestado");
+        }
+
+        public void ReturnBook()
+        {
+            Console.WriteLine("Libro Devuelto");
+        }
+    }
+
+    public interface IUserManager
+    {
+        public void UserStatus();
+
+        public void UserActivity();
+
+        public void UserLogout();
+
+        public void UserAuthentication();
+    }
+
+    public class UserManager : IUserManager
+    {
+        public void UserStatus()
+        {
+            Console.WriteLine("Esta en sin deudas");
+        }
+
+        public void UserActivity()
+        {
+            Console.WriteLine("Esta leyendo libros");
+        }
+
+        public void UserAuthentication()
+        {
+            Console.WriteLine("Es usuario a iniciado sesion...");
+        }
+
+        public void UserLogout()
+        {
+            Console.WriteLine("El usuario ha cerrado sesion...");
+        }
+    }
+}

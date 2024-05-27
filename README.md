@@ -8,7 +8,7 @@ cd /ruta/proyecto
 ```
 
 ## Contrucction de la aplicacion consola
-Intalacion de .NET en el maquina.
+Intalacion de .NET (v8.0) en el maquina.
 https://dotnet.microsoft.com/en-us/download
 
 ### Restaura los paquetes NuGet

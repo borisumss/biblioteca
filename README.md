@@ -41,9 +41,9 @@ cd biblioteca/
 
 ## Patrones de Diseño:
 
-- **Creational:** FactoryMethod (para la implementación de `BookFactory`).
-- **Estructural:** Adapter (para la implementación de `LibraryPanelAdapter`, `ILibraryPanel`).
-- **Comportamiento:** Observer (para la implementación de `IUserObserver`, `IBookObservable`).
+- **Creational:** FactoryMethod (para la implementación de `BookFactory`) a traves de esta instanciamos libros o `Book` de acuerdo a los generos que tenemos `FantasyBook`, `HorrorBook`, `SciFiBook`.
+- **Estructural:** Adapter (para la implementación de `LibraryPanelAdapter`, `ILibraryPanel`) se han unificado las interfaces incompatibles de `IUserManager`, `ILibraryManager` a traves de `LibraryPanelAdapter` y ahora la interfaz `ILibraryPanel` es capaz de ejecutar la operaciones de ambas interfaces.
+- **Comportamiento:** Observer (para la implementación de `IUserObserver`, `IBookObservable`) se notifica a los usuarios de los cambios de estado del libro que se este prestando.
 ## Arquitectura en 3 capas:
 
 - **Capa de acceso a datos:** Contiene las clases que representan los datos y modelos del proyecto.
